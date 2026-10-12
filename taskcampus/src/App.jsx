@@ -1,21 +1,38 @@
+import Header from "./components/Header"
+import TaskSummary from "./components/TaskSummary"
+import TaskList from "./components/TaskList"
+import Footer from "./components/Footer"
+import AcctionButton from "./components/ActionButton"
+
 function App() {
-  const appName = 'TaskCampus'
-  const description = 'Aplicación para gestionar tareas académicas'
+  function reviewTasks() {
+    alert('Tienes 3 tareas pendientes, por favor revisar')
+  }
+
   const task = ['Aprender qué es React', 'Crear un proyecto con Vite', 'Practicar JSX']
 
   return (
     <main>
-      <h1>{appName}</h1>
-      <p>{description}</p>
+      <Header
+        title="TaskCampus"
+        description="Gestor de tareas académicas"
+      />
+      <TaskSummary
+        summary="Resumen"
+        pending="Tienes 3 tareas pendientes"
+      />
 
-      <section>
-        <h2>Primeras tareas</h2>
-        <ul>
-          <li>{task[0]}</li>
-          <li>{task[1]}</li>
-          <li>{task[2]}</li>
-        </ul>
-      </section>
+      <TaskList
+        task1={task[0]}
+        task2={task[1]}
+        task3={task[2]}
+      />
+
+      <AcctionButton onReview={reviewTasks}/>
+
+      <Footer
+        footer="Esto es un footer"
+      />
     </main>
   )
 }
