@@ -1,6 +1,6 @@
 function Footer({ footer }) {
     return (
-        <footer>
+        <footer className="card">
             <p>{footer}</p>
         </footer>
     )

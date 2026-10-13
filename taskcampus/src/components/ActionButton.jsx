@@ -1,7 +1,7 @@
 function AcctionButton({ onReview }) {
     return (
         <section>
-            <h2>Acciones</h2>
+            <h2 className="section-title">Acciones</h2>
             <button onClick={onReview}>
                 Revisar tareas
             </button>

@@ -1,8 +1,8 @@
 function Header({ title, description }) {
     return (
-        <header>
-            <h1>{title}</h1>
-            <p>{description}</p>
+        <header className="header">
+            <h1 className="header-title">{title}</h1>
+            <p className="header-description">{description}</p>
         </header>
     )
 }

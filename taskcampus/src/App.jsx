@@ -1,3 +1,4 @@
+import './App.css'
 import Header from "./components/Header"
 import TaskSummary from "./components/TaskSummary"
 import TaskList from "./components/TaskList"
@@ -12,7 +13,7 @@ function App() {
   const task = ['Aprender qué es React', 'Crear un proyecto con Vite', 'Practicar JSX']
 
   return (
-    <main>
+    <main className="app-container">
       <Header
         title="TaskCampus"
         description="Gestor de tareas académicas"
