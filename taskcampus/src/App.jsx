@@ -1,16 +1,28 @@
+import { useState } from "react";
 import './App.css'
+
 import Header from "./components/Header"
 import TaskSummary from "./components/TaskSummary"
 import TaskList from "./components/TaskList"
 import Footer from "./components/Footer"
 import AcctionButton from "./components/ActionButton"
 
-function App() {
-  function reviewTasks() {
-    alert('Tienes 3 tareas pendientes, por favor revisar')
-  }
+const App = () => {
+  const [tareas, setTareas] = useState([
+    { id: 1, titulo: "Aprender qué es React", completada: false },
+    { id: 2, titulo: "Crear un proyecto con Vite", completada: true },
+    { id: 3, titulo: "Practicar JSX", completada: false }
+  ])
 
-  const task = ['Aprender qué es React', 'Crear un proyecto con Vite', 'Practicar JSX']
+  const completarTarea = (id) => {
+    setTareas(
+      tareas.map((tarea) =>
+        tarea.id === id
+          ? {...tarea, completada: true}
+          : tarea
+      )
+    )
+  }
 
   return (
     <main className="app-container">
@@ -18,18 +30,18 @@ function App() {
         title="TaskCampus"
         description="Gestor de tareas académicas"
       />
+
       <TaskSummary
         summary="Resumen"
-        pending="Tienes 3 tareas pendientes"
+        pending="Tienes completadas: "
+        total={tareas.length}
       />
 
       <TaskList
-        task1={task[0]}
-        task2={task[1]}
-        task3={task[2]}
+        tareas={tareas} onCompletar={completarTarea}
       />
 
-      <AcctionButton onReview={reviewTasks}/>
+      <AcctionButton/>
 
       <Footer
         footer="Esto es un footer"

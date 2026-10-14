@@ -1,34 +1,40 @@
+import { useState } from "react";
+
 function showTask(taskName) {
     alert(`Has seleccionado la tarea: ${taskName}`)
 }
 
-function TaskList({ task1, task2, task3 }) {
+const TaskList = ({ tareas, onCompletar }) => {
+    const [mostrarDetalle, setMostrarDetalle] = useState(false);
+
     return (
-        <section className="card">
+        <div className="card">
             <h2 className="section-title">Listado de tareas</h2>
-            <ul className="task-list">
-                <li className="task-item">
-                    {task1}
-                    <button onClick={() => showTask(task1)}>
-                        Seleccionar
-                    </button>
-                </li>
-                
-                <li className="task-item">
-                    {task2}
-                    <button onClick={() => showTask(task2)}>
-                        Seleccionar
-                    </button>
-                </li>
-                
-                <li className="task-item">
-                    {task3}
-                    <button onClick={() => showTask(task3)}>
-                        Seleccionar
-                    </button>
-                </li>
-            </ul>
-        </section>
+
+            <button 
+              className="task-button"
+              onClick={() => setMostrarDetalle(!mostrarDetalle)}>
+                {mostrarDetalle ? "Ocultar detalle": "Ver detalle"}
+            </button>
+
+            {mostrarDetalle && (
+                    <ul className="task-list">
+                        {tareas.map((tarea) => (
+                            <li className="task-item" key={tarea.id}>
+                                <span>{tarea.titulo}</span> 
+                                {tarea.completada ? 
+                                    ":)" : ":("
+                                }
+
+                                <button className="task-button" onClick={() => onCompletar(tarea.id)}>
+                                    Seleccionar
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }            
+        </div>
     )
 }
 
