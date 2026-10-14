@@ -24,11 +24,18 @@ const App = () => {
     )
   }
 
+  const [usuario, setUsuario] = useState("Felipe");
+
+  const usuarioAnonimo = () => {
+    setUsuario("Usuario anonimo");
+  }
+
   return (
     <main className="app-container">
       <Header
         title="TaskCampus"
         description="Gestor de tareas académicas"
+        usuario={usuario} botonAnonimo={usuarioAnonimo}
       />
 
       <TaskSummary
