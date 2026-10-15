@@ -4,7 +4,7 @@ function showTask(taskName) {
     alert(`Has seleccionado la tarea: ${taskName}`)
 }
 
-const TaskList = ({ tareas, onCompletar }) => {
+const TaskList = ({ tareas, onCompletar, error }) => {
     const [mostrarDetalle, setMostrarDetalle] = useState(false);
     const [filtro, setFiltro] = useState("todas");
 
