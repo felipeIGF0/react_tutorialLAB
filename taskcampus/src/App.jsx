@@ -12,8 +12,35 @@ import TaskForm from "./components/TaskForm";
 import useTareas from "./hooks/useTareas";
 
 const App = () => {
-  const { tareas, cargando, error, crearTarea, actualizarTarea, eliminarTarea } = useTareas();
+  const { 
+    tareas, 
+    cargando, 
+    error, 
+    crearTarea, 
+    actualizarTarea, 
+    eliminarTarea,
+    editarTitulo
+  } = useTareas();
   const [tareaAEliminar, setTareaAEliminar] = useState(null);
+
+  const [filtro, setFiltro] = useState("todas");
+  const tareasFiltradas = tareas.filter((t) => {
+    if (filtro === "completadas") return t.completada;
+    if (filtro === "pendientes") return !t.completada;
+    return true; 
+  });
+
+  useEffect(() => {
+    const pendientes = tareas.filter((t) => !t.completada).length;
+    document.title = `TaskCampus (${pendientes} pendientes)`;
+  }, [tareas]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log("TaskCampus activo");
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleAgregarTarea = (titulo) => {
     crearTarea(titulo);
@@ -40,6 +67,8 @@ const App = () => {
           total={tareas.length}
           completadas={tareas.filter((t) => t.completada).length} 
           pendientes={tareas.filter((t) => !t.completada).length} 
+          mostrando={tareasFiltradas.length}
+          filtroActual={filtro}
         />
       </Card>
       
@@ -51,12 +80,12 @@ const App = () => {
       {!cargando && !error && (
         <Card titulo="Mis tareas">
           <TaskList
-            tareas={tareas}
-            onCompletar={(id) => {
-              const tarea = tareas.find((t) => t.id === id); 
-              handleToggleCompletada(id, tarea?.completada);
-            }}
+            tareas={tareasFiltradas}
+            filtro={filtro}
+            onCambiarFiltro={setFiltro}
+            onToggle={handleToggleCompletada}
             onEliminar={setTareaAEliminar}
+            onEditar={editarTitulo}
           />
         </Card>
       )}

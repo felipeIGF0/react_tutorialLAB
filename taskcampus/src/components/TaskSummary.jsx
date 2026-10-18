@@ -1,27 +1,37 @@
 import { useState } from "react";
 
-const TaskSummary = ({ total, completadas, pendientes }) => {
+const TaskSummary = ({ total, completadas, pendientes, mostrando, filtroActual }) => {
     return (
       <div style={{
-      display: "flex",
-      justifyContent: "center",
-      gap: "48px",
-      padding: "8px 0"
-    }}>
+        display: "flex",
+        gap: "24px",
+        justifyContent: "center",
+        flexWrap: "wrap"
+      }}>
 
       <div style={{ textAlign: "center" }}>
-        <span style={{ display: "block", fontSize: "1.75rem", fontWeight: "bold", color: "#1d4ed8" }}>
+        <p style={{
+          display: "block",  
+          fontSize: "1.75rem", 
+          fontWeight: 700, 
+          color: "#1d4ed8",
+          margin: 0
+        }}>
           {total}
-        </span>
-        <span className="task-summary">
-          Total
-        </span>
+        </p>
+        <p style={{ color: "#6478b", margin: 0 }}>Total</p>
       </div>
 
       <div style={{ textAlign: "center" }}>
-        <span style={{ display: "block", fontSize: "1.75rem", fontWeight: "bold", color: "#16a34a" }}>
+        <p style={{ 
+          display: "block", 
+          fontSize: "1.75rem", 
+          fontWeight: 700, 
+          color: "#16a34a",
+          margin: 0
+        }}>
           {completadas}
-        </span>
+        </p>
         <span className="task-summary">
           Completadas
         </span>
@@ -29,12 +39,29 @@ const TaskSummary = ({ total, completadas, pendientes }) => {
 
 
       <div style={{ textAlign: "center" }}>
-        <span style={{ display: "block", fontSize: "1.75rem", fontWeight: "bold", color: "#f59e0b" }}>
+        <p style={{ 
+          display: "block", 
+          fontSize: "1.75rem", 
+          fontWeight: 700, 
+          color: "#f59e0b",
+          margin: 0
+        }}>
           {pendientes}
-        </span>
-        <span className="task-summary">
-          Pendientes
-        </span>
+        </p>
+        <p style={{ color: "#64748b", margin: 0}}>Pendientes</p>
+      </div>
+
+      <div style={{ textAlign: "center" }}>
+        <p style={{ 
+          display: "block", 
+          fontSize: "1.75rem", 
+          fontWeight: 700, 
+          color: "#0f172a",
+          margin: 0
+        }}>
+          {mostrando}
+        </p>
+        <p style={{ color: "#64748b", margin: 0}}>Mostrando ({filtroActual})</p>
       </div>
     </div>
     );
