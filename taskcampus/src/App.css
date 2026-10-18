@@ -157,3 +157,27 @@ body {
   justify-content: center;
   margin-top: 20px;
 }
+
+.task-summary {
+  font-size: "0.85rem";
+  color: "6478b";
+  font-weight: 500;
+}
+
+.section-title {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #1e3a8a;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.btn-success {
+  background-color: #198754;
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background-color: #146c43;
+}

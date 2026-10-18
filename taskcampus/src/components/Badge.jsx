@@ -4,7 +4,7 @@ const colorMap = {
     en_progreso: "#2563eb",
 }
 
-const Badge = ({ texto }) => {
+const Badge = ({ texto, onClick }) => {
     const color = colorMap[texto] || "#6b7280";
     return (
         <span
@@ -14,8 +14,14 @@ const Badge = ({ texto }) => {
             padding: "2px 10px",
             borderRadius: "12px",
             fontSize: "0.75rem",
-            fontWeight: 600
-          }}>
+            fontWeight: 600,
+            cursor: onClick ? "pointer" : "default",
+            userSelect: "none",
+            display: "inline-block",
+            transition: "opacity 0.2s"
+          }}
+          title={onClick ? "Haz clic para cambiar estado" : undefined}
+        >
           {texto}
         </span>
     );

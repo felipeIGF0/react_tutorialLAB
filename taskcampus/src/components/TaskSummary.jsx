@@ -1,17 +1,42 @@
 import { useState } from "react";
 
-const TaskSummary = () => {
-    const [completadas, setCompletadas] = useState(0);
-    
-    const marcarCompletada = () => {
-        setCompletadas(completadas + 1);
-    };
-
+const TaskSummary = ({ total, completadas, pendientes }) => {
     return (
-        <div>
-            <p>Tareas pendientes: <strong>{completadas}</strong></p>
-            <button onClick={marcarCompletada} className="task-button">Marcar como completada</button>
-        </div>
+      <div style={{
+      display: "flex",
+      justifyContent: "center",
+      gap: "48px",
+      padding: "8px 0"
+    }}>
+
+      <div style={{ textAlign: "center" }}>
+        <span style={{ display: "block", fontSize: "1.75rem", fontWeight: "bold", color: "#1d4ed8" }}>
+          {total}
+        </span>
+        <span className="task-summary">
+          Total
+        </span>
+      </div>
+
+      <div style={{ textAlign: "center" }}>
+        <span style={{ display: "block", fontSize: "1.75rem", fontWeight: "bold", color: "#16a34a" }}>
+          {completadas}
+        </span>
+        <span className="task-summary">
+          Completadas
+        </span>
+      </div>
+
+
+      <div style={{ textAlign: "center" }}>
+        <span style={{ display: "block", fontSize: "1.75rem", fontWeight: "bold", color: "#f59e0b" }}>
+          {pendientes}
+        </span>
+        <span className="task-summary">
+          Pendientes
+        </span>
+      </div>
+    </div>
     );
 };
 

@@ -1,9 +1,7 @@
-function Header({ title, description, usuario, botonAnonimo }) {
+function Header({ title, description }) {
     return (
         <header className="header">
           <h1 className="header-title">{title}</h1>
-          <p>{usuario}</p>
-          <button className="task-button" onClick={botonAnonimo}>Anonimato</button>
           <p className="header-description">{description}</p>
         </header>
     )
