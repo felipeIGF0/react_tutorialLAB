@@ -94,7 +94,25 @@ const useTareas = () => {
         }
     };
 
-    return { tareas, cargando, error, crearTarea, actualizarTarea, eliminarTarea };
+    const editarTitulo = async (id, nuevoTitulo) => {
+        try {
+            const res = await fetch(`${API_URL}/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title: nuevoTitulo })
+            });
+
+            if (!res.ok) throw new Error("Error al editar tarea");
+
+            setTareas((prev) => 
+                prev.map((t) => (t.id === id ? { ...t, titulo: nuevoTitulo } : t))
+            );
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    return { tareas, cargando, error, crearTarea, actualizarTarea, eliminarTarea, editarTitulo };
 };
 
 export default useTareas;

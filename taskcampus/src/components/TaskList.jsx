@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Button from "./Button";
 import Badge from "./Badge";
+import TaskItem from "./TaskItem";
 import EmptyState from "./EmptyState";
 
 function showTask(taskName) {
     alert(`Has seleccionado la tarea: ${taskName}`)
 }
 
-const TaskList = ({ tareas, onCompletar, onEliminar, onToggle }) => {
+const TaskList = ({ tareas, onCompletar, onEliminar, onEditar }) => {
     const [filtro, setFiltro] = useState("todas");
 
     const tareasFiltradas = tareas.filter((t) => {
@@ -62,15 +63,7 @@ const TaskList = ({ tareas, onCompletar, onEliminar, onToggle }) => {
                 />
               </span>
 
-              <span
-                style={{
-                  marginLeft: "10px",
-                  textDecoration: tarea.completada ? "line-through" : "none",
-                  color: tarea.completada ? "#94a3b8" : "inherit"
-                }}
-              >
-                {tarea.titulo}
-              </span>
+              <TaskItem tarea={tarea} onEditar={onEditar} />
               
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 {tarea.completada ? (<span>✅</span>) : (<span>❌</span>)}
