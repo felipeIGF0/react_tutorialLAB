@@ -7,6 +7,8 @@ import TaskList from "./components/TaskList";
 import Footer from "./components/Footer";
 import AcctionButton from "./components/ActionButton";
 import TaskForm from "./components/TaskForm";
+import Card from "./components/Card";
+import Modal from "./components/Modal";
 
 const App = () => {
   const [cargando, setCargando] = useState(false);
@@ -103,6 +105,12 @@ const App = () => {
     }
   };
 
+  const [tareaAEliminar, setTareaAEliminar] = useState(null);
+  const handleEliminar = () => {
+    setTareas((prev) => prev.filter((t) => t.id !== tareaAEliminar));
+    setTareaAEliminar(null);
+  };
+
   const completarTarea = (id) => {
     setTareas(
       tareas.map((tarea) =>
@@ -119,26 +127,34 @@ const App = () => {
   };
 
   return (
-    <main className="app-container">
+    <div className="app-container">
       <Header
         title="TaskCampus"
         description="Gestor de tareas académicas"
         usuario={usuario} botonAnonimo={usuarioAnonimo}
       />
 
-      {/* <TaskSummary
-        summary="Resumen"
-        pending="Tienes completadas: "
-        total={pendientes}
-      /> */}
-
+      <Card titulo="Resumen de tareas">
+        <TaskSummary/>
+      </Card>
+      
       <TaskForm onAgregar={agregarTarea}/>
 
-      <TaskList
-        tareas={tareas} 
-        onCompletar={completarTarea}
-        cargando={cargando}
-        error={error}
+      <Card titulo="Mis tareas">
+        <TaskList
+          tareas={tareas} 
+          onCompletar={completarTarea}
+          cargando={cargando}
+          error={error}
+          onEliminar={setTareaAEliminar}
+        />
+      </Card>
+
+      <Modal
+        visible={tareaAEliminar !== null}
+        mensaje= "Seguro que deseas eliminar esta tarea?"
+        onConfirmar={handleEliminar}
+        onCancelar={() => setTareaAEliminar(null)}
       />
 
       <AcctionButton/>
@@ -146,7 +162,7 @@ const App = () => {
       <Footer
         footer="Esto es un footer"
       />
-    </main>
+    </div>
   )
 };
 

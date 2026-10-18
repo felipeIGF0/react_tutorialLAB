@@ -1,12 +1,18 @@
 import { useState } from "react";
 
-const TaskSummary = ({ summary, pending, total }) => {
-    return (
-        <div className="card">
-            <h2 className="section-title">{summary}</h2>
-            <p>{pending} <strong>{total}</strong></p>
-        </div>
-    )
-}
+const TaskSummary = () => {
+    const [completadas, setCompletadas] = useState(0);
+    
+    const marcarCompletada = () => {
+        setCompletadas(completadas + 1);
+    };
 
-export default TaskSummary
+    return (
+        <div>
+            <p>Tareas pendientes: <strong>{completadas}</strong></p>
+            <button onClick={marcarCompletada} className="task-button">Marcar como completada</button>
+        </div>
+    );
+};
+
+export default TaskSummary;
