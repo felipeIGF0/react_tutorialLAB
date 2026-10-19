@@ -11,6 +11,7 @@ const useTareas = () => {
     const [tareas, setTareas] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
+    const [operacionEnCurso, setOperacionEnCurso] = useState(false);
 
     useEffect(() => {
         const cargar = async () => {
@@ -46,10 +47,13 @@ const useTareas = () => {
             ]);
         } catch (err) {
             setError(err.message);
+        } finally {
+            setOperacionEnCurso(false);
         }
     };
 
     const actualizarTarea = async (id, cambios) => {
+        setOperacionEnCurso(true);
         try {
             await putTarea(id, cambios);
             setTareas((prev) =>
@@ -57,19 +61,25 @@ const useTareas = () => {
             );
         } catch (err) {
             setError(err.message);
+        } finally {
+            setOperacionEnCurso(false);
         }
     };
 
     const eliminarTarea = async (id) => {
+        setOperacionEnCurso(true);
         try {
           await deleteTarea(id);
           setTareas((prev) => prev.filter((t) => t.id !== id));       
         } catch (err) {
             setError(err.message);
+        } finally {
+            setOperacionEnCurso(false);
         }
     };
 
     const editarTitulo = async (id, nuevoTitulo) => {
+        setOperacionEnCurso(true);
         try {
           await patchTareaTitulo(id, nuevoTitulo);
           setTareas((prev) => 
@@ -77,10 +87,12 @@ const useTareas = () => {
           );
         } catch (err) {
             setError(err.message);
+        } finally {
+            setOperacionEnCurso(false);
         }
     };
 
-    return { tareas, cargando, error, crearTarea, actualizarTarea, eliminarTarea, editarTitulo };
+    return { tareas, cargando, error, operacionEnCurso, crearTarea, actualizarTarea, eliminarTarea, editarTitulo };
 };
 
 export default useTareas;

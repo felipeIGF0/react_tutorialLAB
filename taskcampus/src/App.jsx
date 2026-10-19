@@ -1,33 +1,47 @@
 import { useState, useEffect } from "react";
 import './App.css';
 
-import Card from "./components/Card";
 import Header from "./components/Header";
+import Card from "./components/Card";
 import Modal from "./components/Modal";
 import TaskList from "./components/TaskList";
 import TaskSummary from "./components/TaskSummary";
-import Footer from "./components/Footer";
-import AcctionButton from "./components/ActionButton";
 import TaskForm from "./components/TaskForm";
 import useTareas from "./hooks/useTareas";
+
+import Navigation from "./components/Navigation";
+import SummaryView from "./views/SummaryView";
+import TaskView from "./views/TaskView";
+import NewTaskView from "./views/NewTaskView";
 
 const App = () => {
   const { 
     tareas, 
     cargando, 
     error, 
+    operacionEnCurso,
     crearTarea, 
     actualizarTarea, 
     eliminarTarea,
     editarTitulo
   } = useTareas();
-  const [tareaAEliminar, setTareaAEliminar] = useState(null);
 
+  const [vistaActiva, setVistaActiva] = useState("resumen");
+  const [tareaAEliminar, setTareaAEliminar] = useState(null);
   const [filtro, setFiltro] = useState("todas");
+  const [busqueda, setBusqueda] = useState("");
+
   const tareasFiltradas = tareas.filter((t) => {
-    if (filtro === "completadas") return t.completada;
-    if (filtro === "pendientes") return !t.completada;
-    return true; 
+    const coincideEstado = 
+      filtro === "todas" ? true :
+      filtro === "completadas" ? t.completada :
+      !t.completada;
+      
+    const tituloTarea = (t.titulo || "").toLowerCase();
+    const textoBusqueda = (busqueda || "").toLowerCase();
+    const coincideTexto = tituloTarea.includes(textoBusqueda);
+
+    return coincideEstado && coincideTexto; 
   });
 
   useEffect(() => {
@@ -62,32 +76,45 @@ const App = () => {
         description="Gestor de tareas académicas"
       />
 
-      <Card titulo="Resumen de tareas">
-        <TaskSummary 
+      <Navigation
+        vistaActiva={vistaActiva}
+        onCambiarVista={setVistaActiva}
+      />
+
+      {vistaActiva === "resumen" && (
+        <SummaryView
           total={tareas.length}
-          completadas={tareas.filter((t) => t.completada).length} 
-          pendientes={tareas.filter((t) => !t.completada).length} 
+          completadas={tareas.filter((t) => t.completada).length}
+          pendientes={tareas.filter((t) => !t.completada).length}
           mostrando={tareasFiltradas.length}
           filtroActual={filtro}
         />
-      </Card>
-      
-      <TaskForm onAgregar={handleAgregarTarea} />
+      )}
 
-      {cargando && <p className="estado-carga">Cargando tareas...</p>}
-      {error && <p className="estado-error">Error: {error}</p>}
+      {vistaActiva === "tareas" && (
+        <TaskView
+          tareas={tareasFiltradas}
+          filtro={filtro}
+          onCambiarFiltro={setFiltro}
+          busqueda={busqueda}
+          onCambiarBusqueda={setBusqueda}
+          onToggle={handleToggleCompletada}
+          onEliminar={setTareaAEliminar}
+          onEditar={editarTitulo}
+          cargando={cargando}
+          error={error}
+          operacionEnCurso={operacionEnCurso}
+        />
+      )}
 
-      {!cargando && !error && (
-        <Card titulo="Mis tareas">
-          <TaskList
-            tareas={tareasFiltradas}
-            filtro={filtro}
-            onCambiarFiltro={setFiltro}
-            onToggle={handleToggleCompletada}
-            onEliminar={setTareaAEliminar}
-            onEditar={editarTitulo}
-          />
-        </Card>
+      {vistaActiva === "nueva" && (
+        <NewTaskView 
+          onAgregar={async (titulo) => {
+            await crearTarea(titulo);
+            setVistaActiva("tareas");
+          }}
+          operacionEnCurso={operacionEnCurso} 
+        />
       )}
 
       <Modal
@@ -95,12 +122,6 @@ const App = () => {
         mensaje="¿Seguro que deseas eliminar estar tarea? Esta acción no se puede deshacer."
         onConfirmar={handleConfirmarEliminacion}
         onCancelar={() => setTareaAEliminar(null)}
-      />
-
-      <AcctionButton/>
-
-      <Footer
-        footer="Esto es un footer"
       />
     </div>
   )
